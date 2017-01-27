@@ -1,22 +1,11 @@
 FROM centos:7
 
-ADD MariaDB.repo /etc/yum.repos.d/
-RUN yum install -y MariaDB-server-10.1.21 MariaDB-devel-10.1.21 MariaDB-shared-10.1.21
-
+COPY MariaDB.repo /etc/yum.repos.d/
 RUN yum install -y http://packages.groonga.org/centos/groonga-release-1.2.0-1.noarch.rpm
-RUN yum install -y mecab mecab-ipadic
-RUN yum install -y groonga-6.1.4 groonga-devel-6.1.4 groonga-tokenizer-mecab-6.1.4
+RUN yum install -y MariaDB-server-10.1.21 groonga-6.1.5 groonga-tokenizer-mecab-6.1.5
 
-RUN yum groupinstall -y "Development Tools"
-RUN yum install -y clang cmake ncurses-devel
-RUN curl -sL https://downloads.mariadb.org/f/mariadb-10.1.21/source/mariadb-10.1.21.tar.gz | tar xz -C /usr/local/src && \
-	cd /usr/local/src/mariadb-10.1.21 && \
-	CC=/usr/bin/clang CXX=/usr/bin/clang++ cmake . -DENABLE_DTRACE=0 && \
-	curl -sL http://packages.groonga.org/source/mroonga/mroonga-6.13.tar.gz | tar xz -C /usr/local/src && \
-	cd /usr/local/src/mroonga-6.13 && \
-	 ./configure --with-mysql-source=/usr/local/src/mariadb-10.1.21 && \
-	make && make install && \
-	rm -rf /usr/local/src/*
+COPY install_mroonga.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/install_mroonga.sh && /usr/local/bin/install_mroonga.sh 6.13
 
 RUN mysql_install_db --datadir=/var/lib/mysql --user=mysql
 RUN mysqld_safe & sleep 10s && \
