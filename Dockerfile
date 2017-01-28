@@ -7,11 +7,8 @@ RUN yum install -y MariaDB-server-10.1.21 groonga-6.1.5 groonga-tokenizer-mecab-
 COPY install_mroonga.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/install_mroonga.sh && /usr/local/bin/install_mroonga.sh 6.13
 
-RUN mysql_install_db --datadir=/var/lib/mysql --user=mysql
-RUN mysqld_safe & sleep 10s && \
-	mysql -u root < /usr/local/share/mroonga/install.sql && \
-	mysql -u root -e "GRANT ALL ON *.* TO root@'%' IDENTIFIED BY 'password' WITH GRANT OPTION" && \
-	mysql -u root -e "SET PASSWORD FOR root@'%' = ''"
+COPY init_mariadb.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/init_mariadb.sh && /usr/local/bin/init_mariadb.sh
 
 COPY entrypoint.sh /root/entrypoint.sh
 RUN chmod +x /root/entrypoint.sh
