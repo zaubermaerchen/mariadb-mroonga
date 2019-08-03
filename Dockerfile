@@ -1,6 +1,6 @@
 FROM centos:7
 
-ARG mariadb_version="10.3.16"
+ARG mariadb_version="10.3.17"
 ARG groonga_version="9.0.5"
 ARG mroonga_version="9.05"
 
