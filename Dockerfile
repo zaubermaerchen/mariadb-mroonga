@@ -1,8 +1,8 @@
 FROM centos:7
 
 ARG mariadb_version="10.4.11"
-ARG groonga_version="9.1.0"
-ARG mroonga_version="9.10"
+ARG groonga_version="9.1.1"
+ARG mroonga_version="9.11"
 
 COPY MariaDB.repo /etc/yum.repos.d/
 RUN mkdir /var/lib/mysql \
