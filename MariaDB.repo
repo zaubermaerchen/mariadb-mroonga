@@ -3,3 +3,5 @@ name = MariaDB
 baseurl = http://yum.mariadb.org/10.5/centos/$releasever/$basearch/
 gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
 gpgcheck=1
+enabled=1
+module_hotfixes=1
