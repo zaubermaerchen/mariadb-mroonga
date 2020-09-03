@@ -6,8 +6,8 @@ ARG mroonga_version="10.06"
 
 COPY MariaDB.repo /etc/yum.repos.d/
 RUN mkdir /var/lib/mysql \
-    && rpm --import https://www.centos.org/keys/RPM-GPG-KEY-CentOS-7 \
-    && rpm --import https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7 \
+    && rpm --import https://www.centos.org/keys/RPM-GPG-KEY-CentOS-Official \
+    && rpm --import https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8 \
     && rpm --import https://yum.mariadb.org/RPM-GPG-KEY-MariaDB \
     && rpm --import https://packages.groonga.org/centos/RPM-GPG-KEY-groonga \
     && dnf upgrade -y \
