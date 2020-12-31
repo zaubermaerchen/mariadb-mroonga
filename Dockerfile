@@ -1,8 +1,8 @@
 FROM centos:8
 
-ARG mariadb_version="10.5.5"
-ARG groonga_version="10.0.7"
-ARG mroonga_version="10.07"
+ARG mariadb_version="10.5.8"
+ARG groonga_version="10.1.0"
+ARG mroonga_version="10.10"
 
 COPY MariaDB.repo /etc/yum.repos.d/
 RUN mkdir /var/lib/mysql \
@@ -12,7 +12,7 @@ RUN mkdir /var/lib/mysql \
     && rpm --import https://packages.groonga.org/centos/RPM-GPG-KEY-groonga \
     && dnf upgrade -y \
     && dnf install -y https://packages.groonga.org/centos/groonga-release-latest.noarch.rpm \
-    && dnf install -y which MariaDB-server-${mariadb_version} MariaDB-client-${mariadb_version} groonga-${groonga_version} groonga-tokenizer-mecab-${groonga_version} mariadb-10.5-mroonga-${mroonga_version} \
+    && dnf install -y --enablerepo=powertools which MariaDB-server-${mariadb_version} MariaDB-client-${mariadb_version} groonga-${groonga_version} groonga-tokenizer-mecab-${groonga_version} mariadb-10.5-mroonga-${mroonga_version} \
     && dnf clean all \
     && rm -rf /var/lib/mysql
 
