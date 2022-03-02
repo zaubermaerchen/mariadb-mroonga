@@ -1,24 +1,24 @@
-FROM centos:8
+FROM almalinux:8
 
-ARG mariadb_version="10.5.10"
-ARG groonga_version="11.0.2"
-ARG mroonga_version="11.02"
+ARG mariadb_version="10.6.7"
+ARG groonga_version="12.0.1"
+ARG mroonga_version="12.00"
 
 COPY MariaDB.repo /etc/yum.repos.d/
 RUN mkdir /var/lib/mysql \
-    && rpm --import https://www.centos.org/keys/RPM-GPG-KEY-CentOS-Official \
+    && rpm --import https://repo.almalinux.org/almalinux/RPM-GPG-KEY-AlmaLinux \
     && rpm --import https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8 \
     && rpm --import https://yum.mariadb.org/RPM-GPG-KEY-MariaDB \
     && rpm --import https://packages.groonga.org/centos/RPM-GPG-KEY-groonga \
     && dnf upgrade -y \
-    && dnf install -y https://packages.groonga.org/centos/groonga-release-latest.noarch.rpm \
-    && dnf install -y --enablerepo=powertools which MariaDB-server-${mariadb_version} MariaDB-client-${mariadb_version} groonga-${groonga_version} groonga-tokenizer-mecab-${groonga_version} mariadb-10.5-mroonga-${mroonga_version} \
+    && dnf install -y https://packages.groonga.org/almalinux/8/groonga-release-latest.noarch.rpm  \
+    && dnf install -y --enablerepo=powertools which MariaDB-server-${mariadb_version} MariaDB-client-${mariadb_version} groonga-${groonga_version} groonga-tokenizer-mecab-${groonga_version} mariadb-10.6-mroonga-${mroonga_version} \
     && dnf clean all \
     && rm -rf /var/lib/mysql
 
-RUN gpg --batch --keyserver keys.gnupg.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
-    && curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.11/gosu-amd64" \
-    && curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.11/gosu-amd64.asc" \
+RUN gpg --batch --keyserver keyserver.ubuntu.com --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
+    && curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.13/gosu-amd64" \
+    && curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.13/gosu-amd64.asc" \
     && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
     && rm /usr/local/bin/gosu.asc \
     && rm -rf /root/.gnupg/ \
