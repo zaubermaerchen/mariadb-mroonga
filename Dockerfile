@@ -3,6 +3,7 @@ FROM almalinux:8
 ARG mariadb_version="10.6.7"
 ARG groonga_version="12.0.1"
 ARG mroonga_version="12.00"
+ARG TARGETPLATFORM
 
 COPY MariaDB.repo /etc/yum.repos.d/
 RUN mkdir /var/lib/mysql \
@@ -16,9 +17,16 @@ RUN mkdir /var/lib/mysql \
     && dnf clean all \
     && rm -rf /var/lib/mysql
 
-RUN gpg --batch --keyserver keyserver.ubuntu.com --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
-    && curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.13/gosu-amd64" \
-    && curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.13/gosu-amd64.asc" \
+RUN case ${TARGETPLATFORM} in \
+         "linux/amd64")  ARCH=amd64  ;; \
+         "linux/arm64")  ARCH=arm64  ;; \
+         "linux/arm/v7") ARCH=armhf  ;; \
+         "linux/arm/v6") ARCH=armel  ;; \
+         "linux/386")    ARCH=i386   ;; \
+    esac \
+    && gpg --batch --keyserver keyserver.ubuntu.com --recv-keys  B42F6819007F00F88E364FD4036A9C25BF357DD4\
+    && curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.14/gosu-${ARCH}" \
+    && curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.14/gosu-${ARCH}.asc" \
     && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
     && rm /usr/local/bin/gosu.asc \
     && rm -rf /root/.gnupg/ \
