@@ -1,8 +1,8 @@
 FROM almalinux:8
 
 ARG mariadb_version="10.6.7"
-ARG groonga_version="12.0.1"
-ARG mroonga_version="12.00"
+ARG groonga_version="12.0.3"
+ARG mroonga_version="12.03"
 ARG TARGETPLATFORM
 
 COPY MariaDB.repo /etc/yum.repos.d/
@@ -34,9 +34,8 @@ RUN case ${TARGETPLATFORM} in \
 
 VOLUME /var/lib/mysql
 
-COPY docker-entrypoint.sh /usr/local/bin/
+COPY --chmod=0755 docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
-RUN chmod +rx /usr/local/bin/docker-entrypoint.sh
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 3306
