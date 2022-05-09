@@ -1,6 +1,6 @@
 FROM almalinux:8
 
-ARG mariadb_version="10.6.7"
+ARG mariadb_version="10.7.3"
 ARG groonga_version="12.0.3"
 ARG mroonga_version="12.03"
 ARG TARGETPLATFORM
@@ -13,7 +13,7 @@ RUN mkdir /var/lib/mysql \
     && rpm --import https://packages.groonga.org/centos/RPM-GPG-KEY-groonga \
     && dnf upgrade -y \
     && dnf install -y https://packages.groonga.org/almalinux/8/groonga-release-latest.noarch.rpm  \
-    && dnf install -y --enablerepo=powertools which MariaDB-server-${mariadb_version} MariaDB-client-${mariadb_version} groonga-${groonga_version} groonga-tokenizer-mecab-${groonga_version} mariadb-10.6-mroonga-${mroonga_version} \
+    && dnf install -y --enablerepo=powertools which MariaDB-server-${mariadb_version} MariaDB-client-${mariadb_version} groonga-${groonga_version} groonga-tokenizer-mecab-${groonga_version} mariadb-10.7-mroonga-${mroonga_version} \
     && dnf clean all \
     && rm -rf /var/lib/mysql
 
