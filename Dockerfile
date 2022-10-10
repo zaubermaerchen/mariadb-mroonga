@@ -1,8 +1,8 @@
 FROM almalinux:8
 
-ARG mariadb_version="10.8.4"
-ARG groonga_version="12.0.7"
-ARG mroonga_version="12.07"
+ARG mariadb_version="10.8.5"
+ARG groonga_version="12.0.8"
+ARG mroonga_version="12.08"
 ARG TARGETPLATFORM
 
 COPY MariaDB.repo /etc/yum.repos.d/
