@@ -1,19 +1,22 @@
-FROM almalinux:8
+FROM --platform=linux/amd64 almalinux:9
 
-ARG mariadb_version="10.8.5"
-ARG groonga_version="12.0.8"
-ARG mroonga_version="12.08"
+ARG mariadb_version="10.11.2"
+ARG groonga_version="13.0.1"
+ARG mroonga_version="13.01"
 ARG TARGETPLATFORM
 
 COPY MariaDB.repo /etc/yum.repos.d/
 RUN mkdir /var/lib/mysql \
-    && rpm --import https://repo.almalinux.org/almalinux/RPM-GPG-KEY-AlmaLinux \
-    && rpm --import https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8 \
+    && rpm --import https://repo.almalinux.org/almalinux/RPM-GPG-KEY-AlmaLinux-9 \
+    && rpm --import https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-9 \
     && rpm --import https://yum.mariadb.org/RPM-GPG-KEY-MariaDB \
     && rpm --import https://packages.groonga.org/centos/RPM-GPG-KEY-groonga \
     && dnf upgrade -y \
-    && dnf install -y https://packages.groonga.org/almalinux/8/groonga-release-latest.noarch.rpm  \
-    && dnf install -y --enablerepo=powertools which MariaDB-server-${mariadb_version} MariaDB-client-${mariadb_version} groonga-${groonga_version} groonga-tokenizer-mecab-${groonga_version} mariadb-10.8-mroonga-${mroonga_version} \
+    && dnf install -y https://apache.jfrog.io/artifactory/arrow/almalinux/9/apache-arrow-release-latest.rpm \
+    && dnf install -y https://packages.groonga.org/almalinux/9/groonga-release-latest.noarch.rpm \
+    && dnf install -y --enablerepo=crb which MariaDB-server-${mariadb_version} MariaDB-client-${mariadb_version}\
+    && dnf install -y --enablerepo=crb --enablerepo=epel groonga-${groonga_version} groonga-tokenizer-mecab-${groonga_version} \
+    && dnf install -y --enablerepo=crb mariadb-10.11-mroonga-${mroonga_version} \
     && dnf clean all \
     && rm -rf /var/lib/mysql
 
